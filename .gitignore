@@ -1,0 +1,40 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# --- Environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Secrets ---
+.env
+*.key
+*.pem
+*credentials*
+*secret*
+
+# --- Local outputs / caches ---
+*.log
+
+# --- Data safety (prevent accidental upload of raw datasets) ---
+data/raw/
+data/private/
+*.parquet
+*.feather
+*.h5
+*.pkl
+*.pickle
+
+# If you ever export large CSVs locally, keep them out too:
+*.csv
