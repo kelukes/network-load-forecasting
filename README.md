@@ -42,11 +42,12 @@ Forecast **1-hour-ahead** network load from an hourly time series using **leakag
 ---
 
 ## Key Results Walk-forward CV
-| Model | RMSE (Gbps) | MAE (Gbps) | R² |
-|------|-------------:|-----------:|---:|
-| Naive (lag_1) | ~0.297 | ~0.20 | ~0.58 |
-| Seasonal naive (lag_24) | ~0.333 | ~0.22 | ~0.47 |
-| **Ridge (α≈0.001–0.01)** | **~0.235** | **~0.153** | **~0.74** |
+| Model | RMSE (Mbps) | MAE (Mbps) | R² |
+|------|------------:|-----------:|---:|
+| Naive (lag_1) | ~297 | ~200 | ~0.58 |
+| Seasonal naive (lag_24) | ~333 | ~220 | ~0.47 |
+| **Ridge (α≈0.001–0.01)** | **~235** | **~153** | **~0.74** |
+
 
 **Peak hours (top 1%)** remain challenging (systematic underprediction), consistent with rare-event behavior and regime shifts.
 
