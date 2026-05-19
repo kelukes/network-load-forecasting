@@ -1,6 +1,7 @@
 # Regression-Based Network Load Forecasting for Sustainable Digital Infrastructure
 
 Forecast **1-hour-ahead** network load from an hourly time series using **leakage-safe feature engineering** and **walk-forward cross-validation**.
+
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![Ridge Regression](https://img.shields.io/badge/Model-Ridge%20Regression-lightblue)
 ![XGBoost](https://img.shields.io/badge/Model-XGBoost-green)
