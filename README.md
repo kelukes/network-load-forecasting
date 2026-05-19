@@ -1,43 +1,16 @@
 # Regression-Based Network Load Forecasting for Sustainable Digital Infrastructure
 
 Forecast **1-hour-ahead** network load from an hourly time series using **leakage-safe feature engineering** and **walk-forward cross-validation**.
-
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Ridge Regression](https://img.shields.io/badge/Model-Ridge%20Regression-lightblue)
+![XGBoost](https://img.shields.io/badge/Model-XGBoost-green)
+![Walk--Forward CV](https://img.shields.io/badge/CV-Walk--Forward-orange)
 ---
 
 ## Problem
 - **Task:** 1-step-ahead forecasting — predict traffic at hour *t* using information available up to *t−1*
 - **Target:** hourly **peak** traffic on the upstream link: `y[t] = max(IN[t], OUT[t])` (reported in **Gbps**)
 - **Why it matters:** capacity planning and operational resilience — rare peaks are high-risk events
-
----
-
-## Data 
-- **Granularity:** hourly aggregates only (no user/content-level data)
-- **Time range:** 2025-08-19 → 2026-01-14 (UTC)
-- **Size:** ~3.3k rows after feature engineering, ~20+ features
-- **Known gap:** 35-hour downtime window (planned maintenance / structured outage) — treated as a limitation (not random missingness)
-
-> **Data availability:** raw data is **not included** in this repository (confidential operational telemetry).  
-> See `data/README.md` for the expected schema and how to plug in a compatible dataset.
-
----
-
-## Method
-### Time-series safe evaluation
-- **Walk-forward CV (expanding window)** with **3 folds**
-- **24-hour gap** between train and test to reduce boundary leakage
-- Metrics reported:
-  - **RMSE / MAE** 
-  - **Peak RMSE / MAE** on **top 1% hours** within each test fold (extreme load slice)
-
-### Models
-- **Baselines**
-  - Naive persistence: `ŷ[t] = y[t−1]` (lag_1)
-  - Seasonal naive: `ŷ[t] = y[t−24]` (lag_24)
-- **Main model**
-  - **Ridge Regression** + `StandardScaler` (interpretable + stable coefficients)
-- **Nonlinear check**
-  - **XGBoost** (tested; did not outperform Ridge under current setup)
 
 ---
 
@@ -53,12 +26,54 @@ Forecast **1-hour-ahead** network load from an hourly time series using **leakag
 
 ---
 
-## Repository Contents
-- `notebooks/` — EDA/FE + modeling notebooks (walk-forward CV, baselines, Ridge, XGBoost)
-- `artifacts/` — exported figures, tables, and model outputs used in reporting
-- `docs/` — submitted deliverables (stakeholder report / project report / presentation)
-- `data/` — **no raw data**, only schema + instructions (`data/README.md`)
+## Method
+### Time-series safe evaluation
+- **Walk-forward CV (expanding window)** with **3 folds**
+- **24-hour gap** between train and test to reduce boundary leakage
+- Metrics reported:
+  - **RMSE / MAE** 
+  - **Peak RMSE / MAE** on **top 1% hours** within each test fold (extreme load slice)
 
 ---
 
+### Models
+- **Baselines**
+  - Naive persistence: `ŷ[t] = y[t−1]` (lag_1)
+  - Seasonal naive: `ŷ[t] = y[t−24]` (lag_24)
+- **Main model**
+  - **Ridge Regression** + `StandardScaler` (interpretable + stable coefficients)
+- **Nonlinear check**
+  - **XGBoost** (tested; did not outperform Ridge under current setup)
+---
 
+## Repository Structure
+
+```text
+├── notebooks/
+│   ├── 01_EDA_and_FE.ipynb          # Exploratory data analysis, feature engineering
+│   └── 02_regression_models.ipynb   # Walk-forward CV, baselines, Ridge, XGBoost
+├── artifacts/                        # Exported figures, tables, model outputs
+├── docs/                             # Stakeholder report, project report, presentation
+├── data/                             # ⚠️ No raw data — schema + instructions only
+│   └── README.md                     # Expected schema and dataset setup guide
+└── README.md
+```
+
+---
+
+## Data 
+- **Granularity:** hourly aggregates only (no user/content-level data)
+- **Time range:** 2025-08-19 → 2026-01-14 (UTC)
+- **Size:** ~3.3k rows after feature engineering, ~20+ features
+- **Known gap:** 35-hour downtime window (planned maintenance / structured outage) — treated as a limitation (not random missingness)
+
+> **Data availability:** raw data is **not included** in this repository (confidential operational telemetry).  
+> See `data/README.md` for the expected schema and how to plug in a compatible dataset.
+
+---
+
+## References & Notes
+
+- Walk-forward CV methodology: [Rob Hyndman — Forecasting: Principles and Practice](https://otexts.com/fpp3/)
+- Ridge Regression: scikit-learn docs
+- Dataset: confidential operational telemetry (ISP infrastructure, 2025–2026)
